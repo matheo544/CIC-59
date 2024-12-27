@@ -1,0 +1,21 @@
+/* styles.css */
+body {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  h1, h2 {
+    color: #333;
+  }
+  
+  form input, form textarea {
+    border: 1px solid #ddd;
+  }
+  
+  button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+  }
+  
