@@ -118,7 +118,7 @@
       // URL du proxy Google Apps Script
       const url = "https://script.google.com/macros/s/AKfycbwmcLmJvawR0Xoei8v-FLHcQwVq_FMyo6Tn3J2vGOt5mQAbwRFChLLLHtnMqooWbj6o/exec";
 
-      // Utilisation de XMLHttpRequest pour contourner les problèmes CORS
+      // Utilisation de XMLHttpRequest pour envoyer les données
       const xhr = new XMLHttpRequest();
       xhr.open("POST", url, true);
       xhr.setRequestHeader("Content-Type", "application/json");
@@ -139,9 +139,6 @@
       };
 
       xhr.send(JSON.stringify(formData));
-    response.addHeader("Access-Control-Allow-Origin", "*");
-    response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
-    response.addHeader("Access-Control-Allow-Headers", "Content-Type");
     }
   </script>
 </body>
