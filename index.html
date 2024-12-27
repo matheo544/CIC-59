@@ -3,36 +3,141 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Accueil - Appels 17</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="styles.css">
+  <title>Réception des Appels 17</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+    }
+    h1 {
+      text-align: center;
+      color: #003366;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+    }
+    input, select, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #003366;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #00509e;
+    }
+    #message {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    #message.success {
+      color: green;
+    }
+    #message.error {
+      color: red;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 font-sans">
+<body>
+  <div class="container">
+    <h1>Traitement des Appels 17</h1>
+    <form id="cic-form">
+      <label for="operateur">Opérateur ayant traité l'appel</label>
+      <select id="operateur" name="op" required>
+        <option value="">-- Sélectionnez --</option>
+        <option value="MELROSE Mathéo">MELROSE Mathéo</option>
+        <option value="RAMMSEL Luka">RAMMSEL Luka</option>
+      </select>
 
-  <!-- Header -->
-  <header class="bg-blue-600 text-white p-4 shadow-md">
-    <div class="container mx-auto flex justify-between items-center">
-      <h1 class="text-2xl font-bold">Accueil - Appels 17</h1>
-      <nav>
-        <ul class="flex space-x-6">
-          <li><a href="reception-appels.html" class="hover:text-gray-300">Réception des Appels 17</a></li>
-          <li><a href="gestion-moyens.html" class="hover:text-gray-300">Gestion des Moyens</a></li>
-          <li><a href="cartographie.html" class="hover:text-gray-300">Cartographie</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+      <label for="nom">Nom du Requérant</label>
+      <input type="text" id="nom" name="nom" placeholder="Dupont" required />
 
-  <!-- Main content -->
-  <main class="container mx-auto p-6">
-    <h2 class="text-xl font-semibold mb-4">Bienvenue sur le site des Appels 17</h2>
-    <p class="text-gray-700">Cliquez sur les sections ci-dessus pour accéder aux différentes fonctionnalités du site.</p>
-  </main>
+      <label for="prenom">Prénom du Requérant</label>
+      <input type="text" id="prenom" name="prenom" placeholder="Jean" required />
 
-  <!-- Footer -->
-  <footer class="bg-blue-600 text-white p-4 mt-6 text-center">
-    <p>&copy; 2024 Appels 17 - Tous droits réservés</p>
-  </footer>
+      <label for="telephone">Numéro de Téléphone</label>
+      <input type="tel" id="telephone" name="tel" placeholder="0601020304" required />
 
+      <label for="adresse">Adresse</label>
+      <textarea id="adresse" name="adresse" rows="2" placeholder="10 rue de Lille"></textarea>
+
+      <label for="commune">Commune</label>
+      <input type="text" id="commune" name="commune" placeholder="Lille" />
+
+      <label for="motif">Motif</label>
+      <select id="motif" name="motif" required>
+        <option value="">-- Sélectionnez --</option>
+        <option value="Accident">Accident</option>
+        <option value="Vol en cours">Vol en cours</option>
+        <option value="Bagarre">Bagarre</option>
+        <option value="Cambriolage">Cambriolage</option>
+        <option value="Violence">Violence</option>
+        <option value="Incendie">Incendie</option>
+        <option value="Autre">Autre</option>
+      </select>
+
+      <label for="observations">Observations</label>
+      <textarea id="observations" name="observations" rows="4" placeholder="Détails supplémentaires..."></textarea>
+
+      <button type="button" onclick="submitForm()">Diffuser l'Appel</button>
+    </form>
+    <div id="message"></div>
+  </div>
+
+  <script>
+    function submitForm() {
+      const formData = {
+        op: document.getElementById("operateur").value,
+        nom: document.getElementById("nom").value,
+        prenom: document.getElementById("prenom").value,
+        tel: document.getElementById("telephone").value,
+        adresse: document.getElementById("adresse").value,
+        commune: document.getElementById("commune").value,
+        motif: document.getElementById("motif").value,
+        observations: document.getElementById("observations").value,
+      };
+
+      // URL du proxy Google Apps Script
+      const url = "https://script.google.com/macros/s/AKfycbwmcLmJvawR0Xoei8v-FLHcQwVq_FMyo6Tn3J2vGOt5mQAbwRFChLLLHtnMqooWbj6o/exec";
+
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          const messageDiv = document.getElementById("message");
+          messageDiv.className = "success";
+          messageDiv.innerText = data.message;
+          document.getElementById("cic-form").reset();
+        })
+        .catch((error) => {
+          const messageDiv = document.getElementById("message");
+          messageDiv.className = "error";
+          messageDiv.innerText = "Erreur : " + error.message;
+        });
+    }
+  </script>
 </body>
 </html>
